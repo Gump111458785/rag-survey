@@ -1,0 +1,28 @@
+{
+  "benchmarks": [
+    {
+      "name": "RGB (Retrieval-augmented Generation Benchmark)",
+      "target_capabilities": ["Noise Robustness", "Negative Rejection", "Information Integration", "Counterfactual Robustness"],
+      "domains": ["News", "Enwiki", "Finance"],
+      "evaluation_type": "Black-box test set"
+    },
+    {
+      "name": "MultiHop-RAG",
+      "target_capabilities": ["Multi-step Reasoning", "Multi-document Synthesizing", "Entity Traversal"],
+      "domains": ["Wikipedia", "HotpotQA", "MuSiQue"],
+      "evaluation_type": "Complex reasoning"
+    },
+    {
+      "name": "ARES (Automated RAG Evaluation System)",
+      "target_capabilities": ["Context Relevance", "Answer Faithfulness", "Answer Relevance"],
+      "domains": ["KILT", "PubMed", "ASQA"],
+      "evaluation_type": "LLM-as-a-judge with synthetic validation"
+    },
+    {
+      "name": "RAGAS (RAG Assessment)",
+      "target_capabilities": ["Faithfulness", "Answer Relevance", "Context Recall", "Context Precision"],
+      "domains": ["General domain Q&A"],
+      "evaluation_type": "Metric scoring framework"
+    }
+  ]
+}

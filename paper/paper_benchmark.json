@@ -1,0 +1,7 @@
+{
+  "title": "Retrieval-Augmented Generation for Large Language Models: A Comprehensive Survey on Architectures, Benchmarks, and Future Frontiers",
+  "paper_type": "Survey / Comprehensive Review",
+  "paradigms": ["Naive RAG", "Advanced RAG", "Modular RAG"],
+  "benchmarks_surveyed": ["RGB", "MultiHop-RAG", "CRUD-RAG", "ARES", "RAGAS"],
+  "core_contributions": 3
+}

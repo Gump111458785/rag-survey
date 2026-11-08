@@ -1,0 +1,29 @@
+{
+  "survey_title": "Retrieval-Augmented Generation for Large Language Models: A Comprehensive Survey",
+  "paradigms": {
+    "Naive_RAG": {
+      "workflow": "Retrieve -> Read",
+      "characteristics": ["Single-pass retrieval", "Direct concatenation of retrieved top-k chunks", "Susceptible to low precision and hallucinations"],
+      "representative_works": ["RAG (Lewis et al., 2020)", "REALM (Guu et al., 2020)"]
+    },
+    "Advanced_RAG": {
+      "workflow": "Pre-Retrieval -> Retrieval -> Post-Retrieval -> Generation",
+      "characteristics": ["Query rewriting & expansion", "Hybrid dense-sparse retrieval", "Cross-encoder re-ranking", "Context compression"],
+      "representative_works": ["Rewrite-Retrieve-Read (Ma et al., 2023)", "HyDE (Gao et al., 2023)", "Self-RAG (Asai et al., 2024)"]
+    },
+    "Modular_RAG": {
+      "workflow": "Configurable, routing-guided dynamic DAG execution",
+      "characteristics": ["Adaptive search engines", "Memory-augmented state tracking", "Multi-source federation", "Iterative self-correction"],
+      "representative_works": ["DSPy (Khattab et al., 2023)", "FLARE (Jiang et al., 2023)", "Adaptive-RAG (Jeong et al., 2024)"]
+    }
+  },
+  "modules": [
+    "Query Transformation",
+    "Document Chunking & Indexing",
+    "Dense-Sparse Hybrid Retrieval",
+    "Cross-Encoder Re-Ranking",
+    "Context Compression & Pruning",
+    "Grounded Response Generation",
+    "Critique & Fact-Checking"
+  ]
+}

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Retrieval-Augmented Generation for Large Language Models: A Comprehensive Survey on Architectures, Benchmarks, and Future Frontiers</title>
+<style>
+  @page {
+    size: A4;
+    margin: 1.8cm 1.5cm 1.8cm 1.5cm;
+    @bottom-center {
+      content: counter(page);
+      font-size: 9pt;
+      font-family: "Times New Roman", Times, serif;
+    }
+  }
+  body {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 10pt;
+    line-height: 1.35;
+    color: #111;
+    margin: 0;
+    padding: 0;
+  }
+  .title-container {
+    text-align: center;
+    margin-bottom: 1.2rem;
+  }
+  h1.title {
+    font-size: 17.5pt;
+    font-weight: bold;
+    margin-bottom: 6px;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+  }
+  .authors {
+    font-size: 11pt;
+    font-style: italic;
+    color: #333;
+    margin-bottom: 4px;
+  }
+  .affiliations {
+    font-size: 9.5pt;
+    color: #555;
+    margin-bottom: 14px;
+  }
+  .abstract-box {
+    margin: 0 auto 1.4rem auto;
+    width: 90%;
+    font-size: 9pt;
+    text-align: justify;
+    line-height: 1.3;
+    padding: 8px 14px;
+    background: #fafafa;
+    border-left: 3px solid #222;
+  }
+  .abstract-title {
+    font-weight: bold;
+    font-size: 9.5pt;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: inline;
+  }
+  .content {
+    column-count: 2;
+    column-gap: 0.65cm;
+    text-align: justify;
+  }
+  h2 {
+    font-size: 11.5pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-top: 10px;
+    margin-bottom: 4px;
+    border-bottom: 0.5pt solid #444;
+    padding-bottom: 2px;
+    break-after: avoid;
+  }
+  h3 {
+    font-size: 10pt;
+    font-weight: bold;
+    margin-top: 8px;
+    margin-bottom: 3px;
+    break-after: avoid;
+  }
+  p {
+    margin: 0 0 6px 0;
+    text-indent: 1.2em;
+  }
+  p.no-indent {
+    text-indent: 0;
+  }
+  ul, ol {
+    margin: 4px 0 8px 18px;
+    padding: 0;
+  }
+  li {
+    margin-bottom: 3px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8px 0 10px 0;
+    font-size: 7.6pt;
+    break-inside: avoid;
+  }
+  th, td {
+    padding: 3px 3px;
+    text-align: center;
+  }
+  th {
+    border-top: 1pt solid #111;
+    border-bottom: 0.5pt solid #111;
+    font-weight: bold;
+    background-color: #f7f7f7;
+  }
+  tr.bottom-border td {
+    border-bottom: 1pt solid #111;
+  }
+  .table-caption {
+    font-size: 8.5pt;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 3px;
+  }
+</style>
+</head>
+<body>
+
+<div class="title-container">
+  <h1 class="title">Retrieval-Augmented Generation for Large Language Models: A Comprehensive Survey on Architectures, Benchmarks, and Future Frontiers</h1>
+  <div class="authors">Anonymous Authors</div>
+  <div class="affiliations">Under Double-Blind Peer Review for Leading AI Survey Journal</div>
+  <div class="abstract-box">
+    <div class="abstract-title">Abstract&mdash;</div>
+    Large Language Models (LLMs) have achieved remarkable capabilities in natural language reasoning, code synthesis, and multi-turn conversation. However, static parametric knowledge limits their factual reliability, rendering them vulnerable to hallucinations, catastrophic forgetting of domain knowledge, and inability to access private or temporally evolving information. <strong>Retrieval-Augmented Generation (RAG)</strong> has emerged as the dominant paradigm to address these fundamental deficiencies by grounding generation on external, non-parametric knowledge repositories. In this survey, we provide a holistic, systematic synthesis of the RAG landscape. We trace the paradigm evolution across three distinct evolutionary stages: <em>Naive RAG</em>, <em>Advanced RAG</em>, and <em>Modular RAG</em>. We construct a unified taxonomy dissecting core functional modules—spanning query formulation, hybrid indexing, dense-sparse multi-stage retrieval, cross-encoder re-ranking, and grounded decoding. Furthermore, we categorize emerging evaluation frameworks and standardized benchmarks across faithfulness, noise robustness, and multi-hop reasoning. Finally, we formulate a critical roadmap outlining open challenges, including the interplay between extended context windows and retrieval, multimodal knowledge grounding, and trustworthy citation auditing.
+  </div>
+</div>
+
+<div class="content">
+
+<h2>1. Introduction</h2>
+<p>
+Despite unprecedented generative fluency, Large Language Models suffer from intrinsic limitations inherent to purely parametric knowledge storage. Specifically, LLMs exhibit factual hallucinations in knowledge-intensive domains, decay rapidly when addressing temporally sensitive queries, and lack provenance for clinical, financial, or legal accountability. Fine-tuning models repeatedly to absorb continuous world updates is computationally prohibitive and risks parameter drift.
+</p>
+<p>
+Retrieval-Augmented Generation (RAG) circumvents these hurdles by decoupling static reasoning parameters from dynamic reference corpora. When presented with an input prompt, a RAG system queries external indices (such as vector stores, knowledge graphs, or hybrid web engines), extracts top-k relevant passages, and prepends them into the generator's context window. Over the past three years, the field has rapidly transitioned from basic retrieve-and-read pipelines into complex, multi-agent, modular orchestration graphs.
+</p>
+
+<h2>2. Contributions of this Survey</h2>
+<p class="no-indent">The primary contributions of this survey are threefold:</p>
+<ol>
+  <li><strong>Unified Three-Tier Architectural Taxonomy:</strong> We formulate a systematic taxonomy classifying RAG systems into Naive, Advanced, and Modular paradigms, providing a structured conceptual framework for dissecting modern retrieval-augmented pipelines.</li>
+  <li><strong>Comprehensive Metric and Benchmark Synthesis:</strong> We analyze and harmonize 15+ evaluation metrics and 6 authoritative benchmark suites (including RGB, MultiHop-RAG, ARES, and RAGAS), detailing capability-oriented assessment criteria for faithfulness, recall, and noise robustness.</li>
+  <li><strong>Critical Roadmap of Open Frontiers:</strong> We synthesize current limitations across long-context trade-offs, multimodal grounding, latency-cost Pareto boundaries, and hallucination auditing, delineating concrete future research trajectories.</li>
+</ol>
+
+<h2>3. Paradigm Evolution: Naive, Advanced, Modular</h2>
+
+<h3>3.1 Naive RAG (Retrieve &rarr; Read)</h3>
+<p>
+Naive RAG represents the foundational implementation. It segments external text documents into fixed-length chunk embeddings, performs single-pass dense vector retrieval via approximate nearest neighbor search, and concatenates top-k passages with the raw user query. While straightforward, it suffers from low precision, lexical mismatch, and context overflow.
+</p>
+
+<h3>3.2 Advanced RAG</h3>
+<p>
+Advanced RAG incorporates deliberate pre-retrieval and post-retrieval optimization phases:
+</p>
+<ul>
+  <li><strong>Pre-Retrieval:</strong> Query expansion, HyDE, and sub-query routing.</li>
+  <li><strong>Hybrid Multi-Stage Retrieval:</strong> Combining dense vectors with sparse BM25 via Reciprocal Rank Fusion.</li>
+  <li><strong>Post-Retrieval:</strong> Neural cross-encoder re-ranking and context pruning.</li>
+</ul>
+
+<h3>3.3 Modular RAG</h3>
+<p>
+Modular RAG reorganizes operations into swappable, composable modules configured within an adaptive directed acyclic execution graph (DAG). Models dynamically decide whether to retrieve, generate, self-correct, or formulate follow-up tool calls based on internal uncertainty metrics.
+</p>
+
+<div class="table-caption">Table 1: Conceptual and Operational Comparison Across Paradigms</div>
+<table>
+  <thead>
+    <tr>
+      <th>Dimension</th>
+      <th>Naive RAG</th>
+      <th>Advanced RAG</th>
+      <th>Modular RAG</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Control Flow</strong></td>
+      <td>Rigid linear</td>
+      <td>Multi-stage sequential</td>
+      <td>Dynamic DAG / State-machine</td>
+    </tr>
+    <tr>
+      <td><strong>Retrieval Timing</strong></td>
+      <td>Single-shot pre-gen</td>
+      <td>Single-shot multi-stage</td>
+      <td>Iterative / On-demand</td>
+    </tr>
+    <tr>
+      <td><strong>Indexing Strategy</strong></td>
+      <td>Fixed-length chunks</td>
+      <td>Hierarchical &amp; semantic</td>
+      <td>Graph + Vector federation</td>
+    </tr>
+    <tr>
+      <td><strong>Context Processing</strong></td>
+      <td>Raw top-k concat</td>
+      <td>Re-rank &amp; compression</td>
+      <td>Selective memory synthesis</td>
+    </tr>
+    <tr>
+      <td><strong>Self-Correction</strong></td>
+      <td>None</td>
+      <td>Heuristic filtering</td>
+      <td>Active reflection &amp; citations</td>
+    </tr>
+    <tr class="bottom-border">
+      <td><strong>Overhead</strong></td>
+      <td>Low (&approx;1&times;)</td>
+      <td>Moderate (&approx;2.5&times;)</td>
+      <td>Dynamic (3&times;&ndash;6&times;)</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="table-caption">Table 2: Standardized Benchmark Suites for RAG Evaluation</div>
+<table>
+  <thead>
+    <tr>
+      <th>Benchmark</th>
+      <th>Target Capabilities</th>
+      <th>Domain</th>
+      <th>Format</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>RGB</strong></td>
+      <td>Noise robustness, negative rejection</td>
+      <td>News, Wiki</td>
+      <td>Black-box suite</td>
+    </tr>
+    <tr>
+      <td><strong>MultiHop-RAG</strong></td>
+      <td>Multi-document synthesis, entity hops</td>
+      <td>HotpotQA</td>
+      <td>Reasoning paths</td>
+    </tr>
+    <tr>
+      <td><strong>CRUD-RAG</strong></td>
+      <td>Create, Read, Update, Delete QA</td>
+      <td>Finance, Med</td>
+      <td>Multi-task corpus</td>
+    </tr>
+    <tr>
+      <td><strong>ARES</strong></td>
+      <td>Context relevance, faithfulness</td>
+      <td>KILT, PubMed</td>
+      <td>LLM judge + synth</td>
+    </tr>
+    <tr class="bottom-border">
+      <td><strong>RAGAS</strong></td>
+      <td>Faithfulness, context recall/precision</td>
+      <td>Generic QA</td>
+      <td>Metric library</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="table-caption">Table 3: Evaluation Metrics for Retrieval and Generation Fidelity</div>
+<table>
+  <thead>
+    <tr>
+      <th>Category</th>
+      <th>Metric</th>
+      <th>Target Focus</th>
+      <th>Target</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan="2"><strong>Retrieval</strong></td>
+      <td>Context Recall</td>
+      <td>Coverage of ground-truth evidence</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>Context Precision</td>
+      <td>Density of relevant supporting chunks</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td rowspan="3"><strong>Generation</strong></td>
+      <td>Faithfulness</td>
+      <td>Attributability of claims to context</td>
+      <td>1.0 (Zero hallucination)</td>
+    </tr>
+    <tr>
+      <td>Answer Relevance</td>
+      <td>Alignment with input query intention</td>
+      <td>1.0</td>
+    </tr>
+    <tr class="bottom-border">
+      <td>Negative Rejection</td>
+      <td>Ability to withhold answer on null context</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>4. Open Challenges &amp; Future Frontiers</h2>
+<ol>
+  <li><strong>Long-Context LLMs vs. RAG:</strong> As native context windows scale past 1M tokens, balancing full-document attention against targeted indexing represents an active trade-off frontier.</li>
+  <li><strong>Multimodal RAG:</strong> Seamless integration across heterogeneous vector representations for images, scientific diagrams, and speech signals.</li>
+  <li><strong>Latency Constraints:</strong> Sub-100ms interactive execution while preserving multi-step re-ranking and citation verification.</li>
+  <li><strong>Security &amp; Poisoning:</strong> Countering adversarial corpus poisoning, prompt injection, and unauthorized data leakage in enterprise retrieval caches.</li>
+</ol>
+
+<h2>5. Conclusion</h2>
+<p>
+Retrieval-Augmented Generation has evolved from an empirical patch for knowledge limitations into a foundational pillar of modern language model systems. By systematically categorizing architectural paradigms, evaluation frameworks, and future frontiers, this survey establishes a comprehensive foundation for future theoretical inquiry and systems design in knowledge-grounded intelligence.
+</p>
+
+</div>
+
+</body>
+</html>
